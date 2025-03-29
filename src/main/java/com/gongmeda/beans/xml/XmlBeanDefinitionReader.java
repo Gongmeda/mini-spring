@@ -1,9 +1,10 @@
-package com.gongmeda.xml;
+package com.gongmeda.beans.xml;
 
-import com.gongmeda.AbstractBeanDefinitionReader;
-import com.gongmeda.BeanDefinition;
-import com.gongmeda.PropertyValue;
-import com.gongmeda.io.ResourceLoader;
+import com.gongmeda.beans.BeanReference;
+import com.gongmeda.beans.AbstractBeanDefinitionReader;
+import com.gongmeda.beans.BeanDefinition;
+import com.gongmeda.beans.PropertyValue;
+import com.gongmeda.beans.io.ResourceLoader;
 import java.io.InputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -50,11 +51,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     private void processBeanDefinition(Element element) {
         String name = element.getAttribute("name");
         String className = element.getAttribute("class");
-
         BeanDefinition beanDefinition = new BeanDefinition();
         processProperty(element, beanDefinition);
         beanDefinition.setBeanClassName(className);
-
         getRegistry().put(name, beanDefinition);
     }
 
@@ -66,7 +65,17 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                 String name = propertyElement.getAttribute("name");
                 String value = propertyElement.getAttribute("value");
 
-                beanDefinition.getPropertyValues().addPropertyValue(new PropertyValue(name, value));
+                if (!value.isEmpty()) {
+                    beanDefinition.getPropertyValues().addPropertyValue(new PropertyValue(name, value));
+                } else {
+                    String ref = propertyElement.getAttribute("ref");
+                    if (ref.isEmpty()) {
+                        throw new IllegalArgumentException("Configuration problem: <property> element for property '"
+                                                           + name + "' must specify a ref or value");
+                    }
+                    BeanReference beanReference = new BeanReference(ref);
+                    beanDefinition.getPropertyValues().addPropertyValue(new PropertyValue(name, beanReference));
+                }
             }
         }
     }

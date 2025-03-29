@@ -1,4 +1,4 @@
-package com.gongmeda.io;
+package com.gongmeda.beans.io;
 
 import java.net.URL;
 

@@ -1,6 +1,6 @@
-package com.gongmeda;
+package com.gongmeda.beans;
 
-import com.gongmeda.io.ResourceLoader;
+import com.gongmeda.beans.io.ResourceLoader;
 import java.util.HashMap;
 import java.util.Map;
 

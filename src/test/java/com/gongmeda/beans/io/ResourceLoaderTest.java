@@ -1,4 +1,4 @@
-package com.gongmeda.io;
+package com.gongmeda.beans.io;
 
 import static org.junit.jupiter.api.Assertions.*;
 

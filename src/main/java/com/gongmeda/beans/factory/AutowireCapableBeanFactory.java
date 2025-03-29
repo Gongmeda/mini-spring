@@ -1,7 +1,8 @@
-package com.gongmeda.factory;
+package com.gongmeda.beans.factory;
 
-import com.gongmeda.BeanDefinition;
-import com.gongmeda.PropertyValue;
+import com.gongmeda.beans.BeanReference;
+import com.gongmeda.beans.BeanDefinition;
+import com.gongmeda.beans.PropertyValue;
 import java.lang.reflect.Field;
 
 public class AutowireCapableBeanFactory extends AbstractBeanFactory {
@@ -21,7 +22,13 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
         for (PropertyValue propertyValue : beanDefinition.getPropertyValues().getPropertyValues()) {
             Field declaredField = bean.getClass().getDeclaredField(propertyValue.getName());
             declaredField.setAccessible(true);
-            declaredField.set(bean, propertyValue.getValue());
+
+            Object value = propertyValue.getValue();
+            if (value instanceof BeanReference beanReference) {
+                value = beanReference.getBean();
+            }
+
+            declaredField.set(bean, value);
         }
     }
 }

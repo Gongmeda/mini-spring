@@ -1,4 +1,4 @@
-package com.gongmeda;
+package com.gongmeda.beans;
 
 public interface BeanDefinitionReader {
 

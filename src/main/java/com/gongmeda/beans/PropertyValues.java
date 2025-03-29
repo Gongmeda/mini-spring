@@ -1,4 +1,4 @@
-package com.gongmeda;
+package com.gongmeda.beans;
 
 import java.util.ArrayList;
 import java.util.List;
